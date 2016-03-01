@@ -1,0 +1,33 @@
+class: Example\TestBuild
+projectDirectory: %workingDirectory%/..
+publicDirectory: %workingDirectory%/../public
+assetsDirectory: %workingDirectory%/../assets
+
+phpExecutable: "php"
+gitExecutable: "git"
+phpUnit:
+  executable: "phpunit"
+  target: "%projectDirectory%/tests"
+
+testPrograms:
+  git: sudo apt-get install git
+  php: sudo apt-get install php5
+testPhp:
+  settings:
+    register_globals: FALSE
+  extensions:
+    - mysql
+testNodejs:
+  version: v0.10.10
+
+directoriesToCreate:
+  "%publicDirectory%/data": "0777"
+  "%publicDirectory%/data/files": "0777"
+symlinksToCreate:
+  "%assetsDirectory%/files": "%publicDirectory%/files"
+filesToCopy:
+  "%assetsDirectory%/image.jpeg": "%publicDirectory%/image.jpeg"
+  "%assetsDirectory%/package.json": "%publicDirectory%/package.json"
+  "%assetsDirectory%/gulpfile.js": "%publicDirectory%/gulpfile.js"
+lessFiles:
+  "%assetsDirectory%/test.less": "%publicDirectory%/test.css"
