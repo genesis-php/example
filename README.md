@@ -19,19 +19,25 @@ Look at the example which gives you quick introduction:
 composer create-project genesis-php/example
 </code>
 
-2. Let`s go:<br>
+2. Initialize build:<br>
+<code>
+cd example && vendor/genesis-php/genesis/genesis self-init
+</code>
+directory 'build' was created, with example files
+
+3. Run:<br>
 <code>
 build/build // default = help - list of available tasks
 </code>
 
 <code>
-build/build init // perform example build
+build/build mytask
 </code>
 
-or simple build, if you don't have some NPM stuff
+or example complex build:
 
 <code>
-build-simple/build init // perform example simple build
+build-example/build init // perform example simple build
 </code>
 
 
