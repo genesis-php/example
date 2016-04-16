@@ -15,30 +15,30 @@ Getting started
 Look at the example which gives you quick introduction:
 
 1. Clone this repository or run:<br>
-<code>
-composer create-project genesis-php/example
-</code>
+	<code>
+	composer create-project genesis-php/example
+	</code>
 
 2. Initialize build:<br>
-<code>
-cd example && vendor/genesis-php/genesis/genesis self-init
-</code>
-directory 'build' was created, with example files
+	<code>
+	cd example && vendor/genesis-php/genesis/genesis self-init
+	</code>
+	directory 'build' was created, with example files
 
 3. Run:<br>
-<code>
-build/build // default = help - list of available tasks
-</code>
+	<code>
+	build/build
+	</code> default = help - list of available tasks
 
-<code>
-build/build mytask
-</code>
+	<code>
+	build/build mytask
+	</code> run some task
 
-or example complex build:
+	or example complex build:
 
-<code>
-build-example/build init // perform example simple build
-</code>
+	<code>
+	build-example/build init
+	</code> run predefined simple build from directory 'build-example'
 
 
 Create you own build
