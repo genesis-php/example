@@ -12,5 +12,5 @@ require_once __DIR__ . '/../app/myApplicationBootstrap.php';
 
 // optionally you can return an Container with services, etc from an app bootstrap
 $configContainer = new Genesis\Config\Container();
-$configContainer->fooService = $fooService;
+$configContainer->addService('fooService', $fooService);
 return $configContainer;

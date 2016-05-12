@@ -1,33 +1,81 @@
 class: Example\TestBuild
-projectDirectory: %workingDirectory%/..
-publicDirectory: %workingDirectory%/../public
-assetsDirectory: %workingDirectory%/../assets
 
-phpExecutable: "php"
-gitExecutable: "git"
-phpUnit:
-  executable: "phpunit"
-  target: "%projectDirectory%/tests"
+parameters:
+  projectDirectory: %workingDirectory%/..
+  publicDirectory: %workingDirectory%/../public
+  assetsDirectory: %workingDirectory%/../assets
 
-testPrograms:
-  git: sudo apt-get install git
-  php: sudo apt-get install php5
-testPhp:
-  settings:
-    register_globals: FALSE
-  extensions:
-    - mysql
-testNodejs:
-  version: v0.10.10
+  phpExecutable: "php"
+  gitExecutable: "git"
+  phpUnit:
+    executable: "phpunit"
+    target: "%projectDirectory%/tests"
 
-directoriesToCreate:
-  "%publicDirectory%/data": "0777"
-  "%publicDirectory%/data/files": "0777"
-symlinksToCreate:
-  "%assetsDirectory%/files": "%publicDirectory%/files"
-filesToCopy:
-  "%assetsDirectory%/image.jpeg": "%publicDirectory%/image.jpeg"
-  "%assetsDirectory%/package.json": "%publicDirectory%/package.json"
-  "%assetsDirectory%/gulpfile.js": "%publicDirectory%/gulpfile.js"
-lessFiles:
-  "%assetsDirectory%/test.less": "%publicDirectory%/test.css"
+  testPrograms:
+    git: sudo apt-get install git
+    php: sudo apt-get install php5
+  testPhp:
+    settings:
+      register_globals: FALSE
+    extensions:
+      - mysql
+  testNodejs:
+    version: v0.10.10
+
+  directoriesToCreate:
+    "%publicDirectory%": 0777
+    "%publicDirectory%/data": 0777
+    "%publicDirectory%/data/files": 0777
+  symlinksRelativeToCreate:
+    "files": "../assets"
+  filesToCopy:
+    "%publicDirectory%/image.jpeg": "%assetsDirectory%/image.jpeg"
+    "%publicDirectory%/package.json": "%assetsDirectory%/package.json"
+    "%publicDirectory%/gulpfile.js": "%assetsDirectory%/gulpfile.js"
+  lessFiles:
+    "%assetsDirectory%/test.less": "%publicDirectory%/test.css"
+
+services:
+  phpUnit:
+    class: Genesis\Commands\PhpUnit
+    setup:
+      - setWorkingDir(%workingDirectory%)
+      - setTarget(%phpUnit.target%)
+      - setOptions(%phpUnit%)
+
+  testPrograms:
+    class: Genesis\Commands\Test\Programs
+    setup:
+      - setRequiredPrograms(%testPrograms%)
+
+  testPhp:
+    class: Genesis\Commands\Test\Php
+    setup:
+      - setSettings(%testPhp%)
+
+  testNodeJs:
+    class: Genesis\Commands\Test\NodeJs
+    setup:
+      - setRequiredVersion(%testNodejs.version%)
+
+  filesystemInit:
+    class: Genesis\Commands\Filesystem\Filesystem
+    setup:
+      - addDirectoriesToCreate(%directoriesToCreate%)
+      - addSymlinksRelativeToCreate(%symlinksRelativeToCreate%, %publicDirectory%)
+      - addFilesToCopy(%filesToCopy%, 'skip')
+
+  nodeJsPackageInstaller:
+    class: Genesis\Commands\NodeJs\PackageInstaller
+    setup:
+      - setDirectory(%assetsDirectory%)
+
+  gulp:
+    class: Genesis\Commands\Assets\Gulp
+    setup:
+      - setDirectory(%assetsDirectory%)
+
+  less:
+    class: Genesis\Commands\Assets\Less
+    setup:
+      - setFiles(%lessFiles%)
