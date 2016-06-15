@@ -21,7 +21,7 @@ Look at the example which gives you quick introduction:
 
 2. Initialize build:<br>
 	<code>
-	cd example && vendor/genesis-php/genesis/genesis self-init
+	cd example && vendor/bin/genesis self-init
 	</code>
 	directory 'build' was created, with example files
 

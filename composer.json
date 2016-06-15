@@ -2,7 +2,7 @@
     "name": "genesis-php/example",
     "type": "project",
     "require": {
-        "genesis-php/genesis": "~2.0"
+        "genesis-php/genesis": "~2.5"
     },
     "minimum-stability": "stable"
 }

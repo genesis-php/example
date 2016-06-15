@@ -1,5 +1,11 @@
 var gulp = require('gulp');
+var less = require('gulp-less');
 
-gulp.task('test', function () {
-	console.log("Running test in Gulp.");
+gulp.task('build', function () {
+	gulp.src([
+		'test.less'
+	])
+	.pipe(less())
+	.pipe(gulp.dest('.'));
+	console.log("Successfully built.");
 });
