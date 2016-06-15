@@ -14,12 +14,6 @@ class TestBuild extends Genesis\Build
 {
 
 	/**
-	 * @var \Genesis\Commands\PhpUnit
-	 * @inject
-	 */
-	public $phpUnit;
-
-	/**
 	 * @var \Genesis\Commands\Test\Programs
 	 * @inject
 	 */
@@ -36,6 +30,12 @@ class TestBuild extends Genesis\Build
 	 * @inject
 	 */
 	public $testNodeJs;
+
+	/**
+	 * @var \Genesis\Commands\PhpUnit
+	 * @inject
+	 */
+	public $phpUnit;
 
 	/**
 	 * @var \Genesis\Commands\Filesystem\Filesystem
@@ -55,18 +55,14 @@ class TestBuild extends Genesis\Build
 	 */
 	public $gulp;
 
-	/**
-	 * @var Genesis\Commands\Assets\Less
-	 * @inject
-	 */
-	public $less;
-
 
 	public function runInit()
 	{
 		$this->testEnvironment();
-		$this->prepareFilesAndDirs();
-		$this->installDependencies();
+		$this->runInstallNpm();
+		$this->runGulpTask();
+		$this->prepareFilesystem();
+		$this->log('Init completed.');
 	}
 
 
@@ -87,14 +83,7 @@ class TestBuild extends Genesis\Build
 	public function runGulpTask()
 	{
 		$this->logSection('Run Gulp');
-		$this->gulp->execute('test');
-	}
-
-
-	public function runCompileLess()
-	{
-		$this->logSection('Compile LESS');
-		$this->less->execute();
+		$this->gulp->execute('build');
 	}
 
 
@@ -113,21 +102,11 @@ class TestBuild extends Genesis\Build
 	}
 
 
-	private function prepareFilesAndDirs()
+	private function prepareFilesystem()
 	{
 		$this->logSection('Create directories and files.');
 		$this->filesystemInit->execute();
 		$this->log("Directories and files created.");
-	}
-
-
-	private function installDependencies()
-	{
-		$this->logSection('Install dependencies');
-		$projectDirectory = $this->container->getParameter('projectDirectory');
-		$command = new Commands\Exec();
-		$command->setCommand("composer install --working-dir $projectDirectory");
-		$command->execute();
 	}
 
 }

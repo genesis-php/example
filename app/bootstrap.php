@@ -13,4 +13,5 @@ class FooService {
 
 }
 
-$fooService = new FooService();
+$container = new stdClass();
+$container->fooService = new FooService();

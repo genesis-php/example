@@ -8,32 +8,31 @@ parameters:
   phpExecutable: "php"
   gitExecutable: "git"
   phpUnit:
-    executable: "phpunit"
+    executable: "%projectDirectory%/vendor/bin/phpunit"
     target: "%projectDirectory%/tests"
 
-  testPrograms:
-    git: sudo apt-get install git
-    php: sudo apt-get install php5
-  testPhp:
-    settings:
-      register_globals: FALSE
-    extensions:
-      - mysql
-  testNodejs:
-    version: v0.10.10
+  test:
+    programs:
+      git: sudo apt-get install git
+      php: sudo apt-get install php5
+    php:
+      settings:
+        register_globals: FALSE
+      extensions:
+        - PDO
+    nodeJs:
+      version: v0.10.10
 
   directoriesToCreate:
     "%publicDirectory%": 0777
     "%publicDirectory%/data": 0777
     "%publicDirectory%/data/files": 0777
   symlinksRelativeToCreate:
-    "files": "../assets"
+    "data/files": "../../../assets"
   filesToCopy:
     "%publicDirectory%/image.jpeg": "%assetsDirectory%/image.jpeg"
-    "%publicDirectory%/package.json": "%assetsDirectory%/package.json"
-    "%publicDirectory%/gulpfile.js": "%assetsDirectory%/gulpfile.js"
-  lessFiles:
-    "%assetsDirectory%/test.less": "%publicDirectory%/test.css"
+    "%publicDirectory%/test.css": "%assetsDirectory%/test.css"
+
 
 services:
   phpUnit:
@@ -46,17 +45,17 @@ services:
   testPrograms:
     class: Genesis\Commands\Test\Programs
     setup:
-      - setRequiredPrograms(%testPrograms%)
+      - setRequiredPrograms(%test.programs%)
 
   testPhp:
     class: Genesis\Commands\Test\Php
     setup:
-      - setSettings(%testPhp%)
+      - setSettings(%test.php%)
 
   testNodeJs:
     class: Genesis\Commands\Test\NodeJs
     setup:
-      - setRequiredVersion(%testNodejs.version%)
+      - setRequiredVersion(%test.nodeJs.version%)
 
   filesystemInit:
     class: Genesis\Commands\Filesystem\Filesystem
@@ -74,8 +73,3 @@ services:
     class: Genesis\Commands\Assets\Gulp
     setup:
       - setDirectory(%assetsDirectory%)
-
-  less:
-    class: Genesis\Commands\Assets\Less
-    setup:
-      - setFiles(%lessFiles%)
