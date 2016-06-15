@@ -1,5 +1,4 @@
 /vendor
 /composer.lock
-/public
 /build
 /assets/node_modules
